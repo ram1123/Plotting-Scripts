@@ -1,3 +1,20 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  HistoPlot.C
+ *
+ *    Description:  
+ *
+ *        Version:  1.0
+ *        Created:  Thursday 07 April 2016 12:17:55  IST
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  Ram Krishna Sharma (), ramkrishna.sharma71@gmail.com
+ *   Organization:  University of Delhi
+ *
+ * =====================================================================================
+ */
 #include <vector>
 #include <iostream>
 #include <string>
@@ -14,23 +31,29 @@
 #include "TH1.h"
 #include "TF1.h"
 
-void HistoPlot(string inputfile, string OutputFileName, 
-	int nbins, double hmin, double hmax, 
-	double constant, double mean, double sigma, 
-	bool FixPar, double minA, double maxA, double minM, double maxM
+void HistoPlot(string inputfile, string OutputFileName, 	// Input & output files
+	int nbins, double hmin, double hmax,			// Histo discription
+	double constant, double mean, double sigma, 		// Gauss input parameters
+	bool FixPar, double minA, double maxA, double minM, double maxM, // Restrict gauss parameters
+	bool getStat						// Show stat or not
 	)
 {
+  if (getStat)
+  {
   gStyle->SetOptStat(1111);
   gStyle->SetOptFit(kTRUE);
+  }
+  else
+  gStyle->SetOptStat(0);
+
 
   TCanvas *c1= new TCanvas("c1"," ");
-  //c1->Divide(1,3);
   ifstream in (inputfile.c_str(),std::ios_base::in);
   vector<double> data;
 
 
- TH1F *h1 = new TH1F("h1","Time Resolution of Saint Gobain  at 9.8 KV",nbins, hmin, hmax);
-cout<<"nbins = "<<nbins<<"\thmin = "<<hmin<<"\thmax = "<<hmax<<endl;
+ TH1F *h1 = new TH1F("h1","",nbins, hmin, hmax);
+ cout<<"nbins = "<<nbins<<"\thmin = "<<hmin<<"\thmax = "<<hmax<<endl;
  h1->GetXaxis()->SetTitle("Time Resolution (ns)");
  h1->GetYaxis()->SetTitle("Counts");
  h1->GetXaxis()->CenterTitle();
@@ -62,7 +85,7 @@ f1->SetParNames("Constant","Mean","Sigma");
 
   h1->Draw();
 h1->Fit(f1,"R");
-TLatex *txt1 = new TLatex(1,100,"Gas composition:R134a(95%):C_{4}H_{10}(4.5%):Sf_{6}(0.5%)");
+TLatex *txt1 = new TLatex(1,100,"Text to show");
 txt1->SetTextSize(0.03);
 txt1->Draw("same");
 string OutputFileNamePDF = OutputFileName+".pdf";
@@ -70,5 +93,5 @@ string OutputFileNamePNG = OutputFileName+".png";
 string OutputFileNameC = OutputFileName+".C";
 c1->SaveAs(OutputFileNamePDF.c_str());
 c1->SaveAs(OutputFileNamePNG.c_str());
-c1->SaveAs(OutputFileNameC.c_str());
+//c1->SaveAs(OutputFileNameC.c_str());
 }

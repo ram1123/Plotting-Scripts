@@ -19,6 +19,7 @@ if __name__ == '__main__':
     parser.add_argument ('-MA'	, '--maxArea'      , default = '0.22'	        , help='put the value of sigma0')
     parser.add_argument ('-mM'	, '--minMean'      , default = '19'	        , help='put the value of sigma0')
     parser.add_argument ('-MM'	, '--maxMean'      , default = '20'	        , help='put the value of sigma0')
+    parser.add_argument ('-stat', '--GetStat'   , default = '1'                 , help='show stat box or not')
     args = parser.parse_args ()
 
 
