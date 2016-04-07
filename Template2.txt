@@ -1,3 +1,0 @@
-output1.txt	test	9p8V	25	0	40
-output2.txt	test	10p8V	25	0	40
-output3.txt	test	11p8V	25	0	40
