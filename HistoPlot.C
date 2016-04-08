@@ -114,7 +114,7 @@ void HistoPlot(	/* bool FixPar, bool getStat	*/					// Show stat or not
 //	c1->cd();
 	//cout<<"v_InputFileName : "<<v_InputFileName[fileNum]<<endl;
 	ntuple[fileNum] = new TNtuple(v_OutPutFileName[fileNum].c_str(),v_OutPutFileName[fileNum].c_str(),v_OutPutFileName[fileNum].c_str());
-	th[fileNum] = new TH1F(Form("th%i",fileNum),v_OutPutFileName[fileNum].c_str(),25,0,40);
+	th[fileNum] = new TH1F(Form("Hist_%s",v_OutPutFileName[fileNum].c_str()),v_OutPutFileName[fileNum].c_str(),25,0,40);
 
 	if (fileNum == 0) 
 	{
