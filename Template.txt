@@ -1,6 +1,11 @@
 #InputFile	TDirectoryName	NTupleName	Nbin	Min	Max
-/home/ramkrishna/cernbox/Plotting-Scripts/ram0.3/output1.txt New 09p4V	25	0	40
-/home/ramkrishna/cernbox/Plotting-Scripts/ram0.3/output2.txt New 09p8V	25	0	40
-/home/ramkrishna/cernbox/Plotting-Scripts/ram0.3/output3.txt New 10p2V	25	0	40
-/home/ramkrishna/cernbox/Plotting-Scripts/ram0.3/output4.txt New 10p6V	25	0	40
-/home/ramkrishna/cernbox/Plotting-Scripts/ram0.3/output5.txt New 11p0V	25	0	40
+/home/ramkrishna/cernbox/Plotting-Scripts/ram0.3/output1.txt Asahi 09p4kV	25	0	40
+/home/ramkrishna/cernbox/Plotting-Scripts/ram0.3/output2.txt Asahi 09p8kV	25	0	40
+/home/ramkrishna/cernbox/Plotting-Scripts/ram0.3/output3.txt Asahi 10p2kV	25	0	40
+/home/ramkrishna/cernbox/Plotting-Scripts/ram0.3/output4.txt Asahi 10p6kV	25	0	40
+/home/ramkrishna/cernbox/Plotting-Scripts/ram0.3/output5.txt Asahi 11p0kV	25	0	40
+/home/ramkrishna/cernbox/Plotting-Scripts/ram0.3/output1.txt Saint-Gobain 09p4kV	25	0	40
+/home/ramkrishna/cernbox/Plotting-Scripts/ram0.3/output2.txt Saint-Gobain 09p8kV	25	0	40
+/home/ramkrishna/cernbox/Plotting-Scripts/ram0.3/output3.txt Saint-Gobain 10p2kV	25	0	40
+/home/ramkrishna/cernbox/Plotting-Scripts/ram0.3/output4.txt Saint-Gobain 10p6kV	25	0	40
+/home/ramkrishna/cernbox/Plotting-Scripts/ram0.3/output5.txt Saint-Gobain 11p0kV	25	0	40

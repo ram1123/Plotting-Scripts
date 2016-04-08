@@ -102,8 +102,8 @@ void HistoPlot(	/* bool FixPar, bool getStat	*/					// Show stat or not
 //  TCanvas *c1 = new TCanvas("test");
 //  TCanvas ** tc = new TCanvas*[v_InputFileName.size()];
 
-  for (int dirn = 0; dirn<Dir_Names.size(); dirn++)
-		TD[dirn] = file->mkdir(Dir_Names[dirn].c_str());
+//  for (int dirn = 0; dirn<Dir_Names.size(); dirn++)
+//		TD[dirn] = file->mkdir(Dir_Names[dirn].c_str());
 //	cout<<"=============================== Dir Name = "<<Dir_Names[dirn]<<endl;
 
   
@@ -111,19 +111,27 @@ void HistoPlot(	/* bool FixPar, bool getStat	*/					// Show stat or not
   string treeName;
   for (int fileNum = 0; fileNum<v_InputFileName.size(); fileNum++)
   {
-//	c1->cd();
-	//cout<<"v_InputFileName : "<<v_InputFileName[fileNum]<<endl;
-	ntuple[fileNum] = new TNtuple(v_OutPutFileName[fileNum].c_str(),v_OutPutFileName[fileNum].c_str(),v_OutPutFileName[fileNum].c_str());
-	th[fileNum] = new TH1F(Form("Hist_%s",v_OutPutFileName[fileNum].c_str()),v_OutPutFileName[fileNum].c_str(),25,0,40);
-
 	if (fileNum == 0) 
 	{
+		TD[countDir] = file->mkdir(Dir_Names[countDir].c_str());
 		treeName = v_TreeName[fileNum];		TD[fileNum]->cd();
 	}
 	if ( treeName != v_TreeName[fileNum] ) {
-		countDir++;		TD[countDir]->cd();		treeName = v_TreeName[fileNum];
+		countDir++;
+		treeName = v_TreeName[fileNum];
+		TD[countDir] = file->mkdir(Dir_Names[countDir].c_str());
+		TD[countDir]->cd();	
 		cout<<"Tree Name = "<<treeName<<endl;
 	}
+	ntuple[fileNum] = new TNtuple(v_OutPutFileName[fileNum].c_str(),v_OutPutFileName[fileNum].c_str(),v_OutPutFileName[fileNum].c_str());
+	string tmpstr = ".";
+	string tmpstr2 = v_OutPutFileName[fileNum];
+	tmpstr2.replace(2,1,tmpstr);
+	//string HistoTitle = v_TreeName[fileNum]+" Time Resolution at "+v_OutPutFileName[fileNum];
+	string HistoTitle = v_TreeName[fileNum]+" Time Resolution at "+tmpstr2;
+	th[fileNum] = new TH1F(Form("Hist_%s",v_OutPutFileName[fileNum].c_str()),HistoTitle.c_str(),25,0,40);
+	//th[fileNum] = new TH1F(Form("Hist_%s",v_OutPutFileName[fileNum].c_str()),v_OutPutFileName[fileNum].c_str(),25,0,40);
+
 	
 		cout<<"Outside loop Tree Name = "<<treeName<<endl;
 		
