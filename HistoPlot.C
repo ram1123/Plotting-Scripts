@@ -136,7 +136,9 @@ void HistoPlot(	/* bool FixPar, bool getStat	*/					// Show stat or not
 	in.close();					// close the loded data file
 //	ntuple[fileNum]->Write();			// write the ntuple in the root file
 
-	TF1 *f1 = new TF1("f1","[0]*exp(-((x-[1])*(x-[1]))/((2*([2]*[2]+1.27*1.27))))",10,30); 
+	//th[fileNum]->Scale(1.0/th[fileNum]->Integral());		// Normalized to unity
+	
+	TF1 *f1 = new TF1("f1","[0]*exp(-((x-[1])*(x-[1]))/((2*([2]*[2]+1.27*1.27))))",th[fileNum]->GetMean()-4.0*th[fileNum]->GetStdDev(), th[fileNum]->GetMean()+4.0*th[fileNum]->GetStdDev()); 
 	f1->SetParameters((double)th[fileNum]->GetBinContent(th[fileNum]->GetMaximumBin()), th[fileNum]->GetMean(), 1.0);
 	bool FixPar = 1;
 	if (FixPar)

@@ -1,10 +1,6 @@
 #InputFile	TDirectoryName	NTupleName	Nbin	Min	Max
-output1.txt	test	9p8V	25	0	40
-output2.txt	test	10p8V	25	0	40
-output3.txt	test	11p8V	25	0	40
-output1.txt	test2	9p8V	25	0	40
-output2.txt	test2	10p8V	25	0	40
-output3.txt	test2	11p8V	25	0	40
-output1.txt	test3	9p8V	25	0	40
-output2.txt	test3	10p8V	25	0	40
-output3.txt	test3	11p8V	25	0	40
+/home/ramkrishna/cernbox/Plotting-Scripts/ram0.3/output1.txt New 09p4V	25	0	40
+/home/ramkrishna/cernbox/Plotting-Scripts/ram0.3/output2.txt New 09p8V	25	0	40
+/home/ramkrishna/cernbox/Plotting-Scripts/ram0.3/output3.txt New 10p2V	25	0	40
+/home/ramkrishna/cernbox/Plotting-Scripts/ram0.3/output4.txt New 10p6V	25	0	40
+/home/ramkrishna/cernbox/Plotting-Scripts/ram0.3/output5.txt New 11p0V	25	0	40
