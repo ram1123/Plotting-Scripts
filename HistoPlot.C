@@ -17,6 +17,11 @@
  */
 
 #include <iostream>
+#include <functional>
+#include <algorithm>
+#include <cstdlib>
+#include <cctype>
+#include <numeric>
 #include <vector>
 #include <string>
 #include "TROOT.h"
@@ -29,6 +34,7 @@
 #include "TFile.h"
 #include "TTree.h"
 #include "TMath.h"
+#include "TNtuple.h"
 #include "TH1.h"
 #include "TF1.h"
 
@@ -36,21 +42,32 @@ void HistoPlot(	/* bool FixPar, bool getStat	*/					// Show stat or not
 		)
 {
   TFile *file = new TFile("Timing_Data_07042016.root","RECREATE");
-  //TDirectory *cditof = file->mkdir("tof");
+  //TFile *file = new TFile("Timing_Data_WithScintillatorSigma_07042016.root","RECREATE");
+   
+  bool getStat = 0;
+  bool ifScintillator = 0;
 
-
-  //if (getStat)
-  if (1)
+  if (getStat)
   {
   //gStyle->SetOptStat(1111);
   gStyle->SetOptFit(kTRUE);
+  if (ifScintillator)
+	string CanvName = "With_Stat_WithScintillatorSigma";
+  else
+	string CanvName = "With_Stat";
   }
   else
+  {
   gStyle->SetOptStat(0);
+  if (ifScintillator)
+	string CanvName = "Without_Stat_WithScintillatorSigma";
+  else
+	string CanvName = "Without_Stat";
+  }
 
-  string InputFileName, TreeName, OutPutFileName;
+  string InputDirectory, InputFileName, TreeName, OutPutFileName;
   int Nbins, min, max;
-  vector<string> v_InputFileName, v_TreeName, v_OutPutFileName;
+  vector<string> v_InputDirectory, v_InputFileName, v_TreeName, v_OutPutFileName;
   vector<int> v_Nbins, v_min, v_max;
 
   ifstream infile;
@@ -63,18 +80,21 @@ void HistoPlot(	/* bool FixPar, bool getStat	*/					// Show stat or not
   
   while(getline(infile,line))
 	{
-	line.erase(line.begin(), find_if(line.begin(), line.end(), not1(ptr_fun<int, int>(isspace)))); 
+//	line.erase(line.begin(), find_if(line.begin(), line.end(), not1(ptr_fun<int, int>(isspace)))); 
 
         if(line[0] == '#') continue;
 
-	stringstream(line) >> InputFileName >> TreeName >> OutPutFileName >> Nbins >> min >> max;
-
+	stringstream(line) >> InputDirectory >> InputFileName >> TreeName >> OutPutFileName >> Nbins >> min >> max;
+	cout<<InputDirectory<<InputFileName<<"\t"<<endl;
+	v_InputDirectory.push_back(InputDirectory);
 	v_InputFileName.push_back(InputFileName);
 	v_TreeName.push_back(TreeName);
 	v_OutPutFileName.push_back(OutPutFileName);
 	v_Nbins.push_back(Nbins);
 	v_min.push_back(min);
 	v_max.push_back(max);
+
+
         
 	if (i==0)	
 	{
@@ -99,6 +119,7 @@ void HistoPlot(	/* bool FixPar, bool getStat	*/					// Show stat or not
   TDirectory **TD = new TDirectory*[Dir_Names.size()];
   TNtuple **ntuple = new TNtuple*[v_InputFileName.size()];
   TH1F **th = new TH1F*[v_InputFileName.size()];
+    TCanvas *c1 = new TCanvas("c1","");
 //  TCanvas *c1 = new TCanvas("test");
 //  TCanvas ** tc = new TCanvas*[v_InputFileName.size()];
 
@@ -129,13 +150,15 @@ void HistoPlot(	/* bool FixPar, bool getStat	*/					// Show stat or not
 	tmpstr2.replace(2,1,tmpstr);
 	//string HistoTitle = v_TreeName[fileNum]+" Time Resolution at "+v_OutPutFileName[fileNum];
 	string HistoTitle = v_TreeName[fileNum]+" Time Resolution at "+tmpstr2;
-	th[fileNum] = new TH1F(Form("Hist_%s",v_OutPutFileName[fileNum].c_str()),HistoTitle.c_str(),25,0,40);
+	th[fileNum] = new TH1F(Form("Hist_%s",v_OutPutFileName[fileNum].c_str()),HistoTitle.c_str(),25,5,50);
 	//th[fileNum] = new TH1F(Form("Hist_%s",v_OutPutFileName[fileNum].c_str()),v_OutPutFileName[fileNum].c_str(),25,0,40);
+	th[fileNum]->Sumw2();
 
 	
-		cout<<"Outside loop Tree Name = "<<treeName<<endl;
-		
-	ifstream in (v_InputFileName[fileNum].c_str(),std::ios_base::in);	// Read new data file
+	cout<<"DEBUG 1:: Outside loop Tree Name = "<<v_InputFileName[fileNum]<<endl;
+	InputFileName = v_InputDirectory[fileNum]+"/"+v_InputFileName[fileNum];
+	ifstream in (InputFileName.c_str(),std::ios_base::in);	// Read new data file
+	cout<<"DEBUG 2:: InputFileName = "<<InputFileName<<endl;
 	while (in >> line)							// loop over all the entries in the loaded data file
 	{
 	double temp = ::atof(line.c_str());
@@ -146,7 +169,10 @@ void HistoPlot(	/* bool FixPar, bool getStat	*/					// Show stat or not
 
 	//th[fileNum]->Scale(1.0/th[fileNum]->Integral());		// Normalized to unity
 	
-	TF1 *f1 = new TF1("f1","[0]*exp(-((x-[1])*(x-[1]))/((2*([2]*[2]+1.27*1.27))))",th[fileNum]->GetMean()-4.0*th[fileNum]->GetStdDev(), th[fileNum]->GetMean()+4.0*th[fileNum]->GetStdDev()); 
+	if (ifScintillator)
+		TF1 *f1 = new TF1("f1","[0]*exp(-((x-[1])*(x-[1]))/((2*([2]*[2]+1.27*1.27))))",th[fileNum]->GetMean()-4.0*th[fileNum]->GetStdDev(), th[fileNum]->GetMean()+4.0*th[fileNum]->GetStdDev()); 
+	else
+		TF1 *f1 = new TF1("f1","[0]*exp(-((x-[1])*(x-[1]))/((2*([2]*[2]))))",th[fileNum]->GetMean()-4.0*th[fileNum]->GetStdDev(), th[fileNum]->GetMean()+4.0*th[fileNum]->GetStdDev()); 
 	f1->SetParameters((double)th[fileNum]->GetBinContent(th[fileNum]->GetMaximumBin()), th[fileNum]->GetMean(), 1.0);
 	bool FixPar = 1;
 	if (FixPar)
@@ -156,10 +182,17 @@ void HistoPlot(	/* bool FixPar, bool getStat	*/					// Show stat or not
 	}
 	f1->SetParNames("Constant","Mean","Sigma");  
 	f1->SetLineWidth(2);
- 	f1->SetLineColor(6);
+ 	f1->SetLineColor(1);
 
 	th[fileNum]->Draw();
+       // th[fileNum]->Rebin(2);
 	th[fileNum]->Fit(f1,"RQ");
+	string tempCaName = v_InputDirectory[fileNum]+"/"+v_TreeName[fileNum]+"_"+v_OutPutFileName[fileNum]+"_"+CanvName+".pdf";
+	c1-> SaveAs(tempCaName.c_str());
+	tempCaName = v_InputDirectory[fileNum]+"/"+v_TreeName[fileNum]+"_"+v_OutPutFileName[fileNum]+"_"+CanvName+".eps";
+	c1-> SaveAs(tempCaName.c_str());
+	tempCaName = v_InputDirectory[fileNum]+"/"+v_TreeName[fileNum]+"_"+v_OutPutFileName[fileNum]+"_"+CanvName+".png";
+	c1-> SaveAs(tempCaName.c_str());
 //	c1->Write();
 //	c1->Clear();
   }
