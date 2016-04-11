@@ -1,4 +1,0 @@
-#NameOfInputFile	TreeName	OutPutFileName
-output1.txt	test	9p8V
-output2.txt	test	10p8V
-output3.txt	test	11p8V
