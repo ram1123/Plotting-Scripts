@@ -3,15 +3,15 @@ void basic2() {
 //   This macro is a variant of basic.C
 //Author: Rene Brun
 
-   TString dir = gSystem->UnixPathName(__FILE__);
-   dir.ReplaceAll("basic2.C","");
-   dir.ReplaceAll("/./","/");
 
    TFile *f = new TFile("basic2.root","RECREATE");
-   TH1F *h1 = new TH1F("h1","x distribution",100,-4,4);
+
+   TH2F *h1 = new TH2F("h1","x distribution",100,0,12,100,0,100);
+
    TTree *T = new TTree("ntuple","data from ascii file");
-   Long64_t nlines = T->ReadFile(Form("%sbasic.dat",dir.Data()),"x:y:z");
+
+   Long64_t nlines = T->ReadFile("RPC_Eff_Aashi.dat","x:y");
    printf(" found %lld points\n",nlines);
-   T->Draw("x","z>2");
+   T->Draw("x:y>h1");
    T->Write();
 }
