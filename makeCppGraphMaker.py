@@ -33,13 +33,15 @@ print '\t// Set TDR Style'
 print '\tsetTDRStyle();'
 print ''
 print '//Define the variables'
-print '\tFloat_t %s, %s, %s;'%(VarInTextFile[0],VarInTextFile[1],VarInTextFile[2])
-print '\tvector<float> v_%s, v_%s, v_%s;'%(VarInTextFile[0],VarInTextFile[1],VarInTextFile[2])
+print '\tFloat_t ',', '.join(VarInTextFile),' ;'
+pre = "v_"
+Pre_VarInTextFile = [pre + x for x in VarInTextFile ]
+print '\tvector<Float_t> ',', '.join(Pre_VarInTextFile),' ;'
 print ''
 print ''
 print '\tInt_t nlines = 0;'
 print '\tTFile *f = new TFile("%s.root","RECREATE");'%OutPutCodeName
-print '\tTNtuple *ntuple = new TNtuple("ntuple","data from ascii file","%s:%s:%s");'%(VarInTextFile[0],VarInTextFile[1],VarInTextFile[2])
+print '\tTNtuple *ntuple = new TNtuple("ntuple","data from ascii file","',':'.join(VarInTextFile),'");'
 print ''
 print ''
 print '\tTCanvas* c1 = new TCanvas("c1","",1);'
@@ -56,29 +58,26 @@ print '\twhile(getline(in,line))'
 print '\t{'
 print "\t\tif(line[0] == '#') continue;"
 print '\t\t'
-print '\t\tstringstream(line) >> %s >> %s >> %s;'%(VarInTextFile[0],VarInTextFile[1],VarInTextFile[2])
+print '\t\tstringstream(line) >>',' >> '.join(VarInTextFile),';'
 print '\t\t'
-print '\t\tcout<<"===> "<<%s <<"\t "<<%s<<"\t"<<%s<<endl;'%(VarInTextFile[0],VarInTextFile[1],VarInTextFile[2])
-print '\t\tv_%s.push_back(%s);'%(VarInTextFile[0],VarInTextFile[0])
-print '\t\tv_%s.push_back(%s);'%(VarInTextFile[1],VarInTextFile[1])
-print '\t\tv_%s.push_back(%s);'%(VarInTextFile[2],VarInTextFile[2])
-print '\t\tntuple->Fill(%s,%s,%s);'%(VarInTextFile[0],VarInTextFile[1],VarInTextFile[2])
+print '\t\tcout<<"===> "<<',' <<"\\t" <<  '.join(VarInTextFile),'<<endl;'
+print ''
+for var in range(0,len(VarInTextFile)):
+	print '\t\t%s.push_back(%s);'%(Pre_VarInTextFile[var],VarInTextFile[var])
+print '\t\tntuple->Fill(',' , '.join(VarInTextFile),');'
 print '\t}'
 
 print '\tin.close();'
 print '\t'
-print '\tTGraphErrors * gr = new TGraphErrors(v_%s.size()); '%VarInTextFile[0]
+print '\tTGraphErrors * gr = new TGraphErrors(%s.size()); '%Pre_VarInTextFile[0]
 print '\t    '
-print '\tfor (unsigned int i = 0; i<v_%s.size();i++)'%VarInTextFile[0]
+print '\tfor (unsigned int i = 0; i<%s.size();i++)'%Pre_VarInTextFile[0]
 print '\t{'
-print '\t        gr->SetPoint(i,v_%s[i],v_%s[i]);'%(VarInTextFile[0],VarInTextFile[1])
-print '\t        gr->SetPointError(i,0,v_%s[i]);'%VarInTextFile[2]
+print '\t        gr->SetPoint(i,%s[i],%s[i]);'%(Pre_VarInTextFile[0],Pre_VarInTextFile[1])
+print '\t        gr->SetPointError(i,0,%s[i]);'%Pre_VarInTextFile[2]
 print '\t}'
- 
 print '\t'
 print '\t'
-
-
 print '\tgr->SetTitle("");'
 print '\t//gr->SetTitle("%s vs %s");'%(VarInTextFile[0],VarInTextFile[1])
 print '\tgr->GetXaxis()->SetTitle("%s");'%xlabel
