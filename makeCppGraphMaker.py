@@ -32,7 +32,7 @@ print ''
 print '\t// Set TDR Style'
 print '\tsetTDRStyle();'
 print ''
-print '//Define the variables'
+print '\t//Define the variables'
 print '\tFloat_t ',', '.join(VarInTextFile),' ;'
 pre = "v_"
 Pre_VarInTextFile = [pre + x for x in VarInTextFile ]
@@ -63,7 +63,25 @@ print '\t\t'
 print '\t\tcout<<"===> "<<',' <<"\\t" <<  '.join(VarInTextFile),'<<endl;'
 print ''
 for var in range(0,len(VarInTextFile)):
-	print '\t\t%s.push_back(%s);'%(Pre_VarInTextFile[var],VarInTextFile[var])
+	if (xscaleFactor != 0.0 and yscaleFactor != 0.0):
+		if (var == 0):
+			print '\t\t%s.push_back(%s/%0.15f);'%(Pre_VarInTextFile[var],VarInTextFile[var],xscaleFactor)
+		else:
+			print '\t\t%s.push_back(%s/%0.15f);'%(Pre_VarInTextFile[var],VarInTextFile[var],yscaleFactor)
+	else:
+		if (xscaleFactor != 0.0 ):
+			if (var == 0):
+				print '\t\t%s.push_back(%s/%0.15f);'%(Pre_VarInTextFile[var],VarInTextFile[var],xscaleFactor)
+			else:
+				print '\t\t%s.push_back(%s);'%(Pre_VarInTextFile[var],VarInTextFile[var])
+		else:
+			if (yscaleFactor != 0.0 ):
+				if (var == 0):
+					print '\t\t%s.push_back(%s);'%(Pre_VarInTextFile[var],VarInTextFile[var])
+				else:
+					print '\t\t%s.push_back(%s/%0.15f);'%(Pre_VarInTextFile[var],VarInTextFile[var],yscaleFactor)
+			else:
+				print '\t\t%s.push_back(%s);'%(Pre_VarInTextFile[var],VarInTextFile[var])
 print '\t\tntuple->Fill(',' , '.join(VarInTextFile),');'
 print '\t}'
 
@@ -82,21 +100,25 @@ print '\tgr->SetTitle("");'
 print '\t//gr->SetTitle("%s vs %s");'%(VarInTextFile[0],VarInTextFile[1])
 print '\tgr->GetXaxis()->SetTitle("%s");'%xlabel
 print '\tgr->GetYaxis()->SetTitle("%s");'%ylabel
-print '\tgr->GetYaxis()->SetTitleOffset(%i);'%yoffset
-print '\tgr->GetXaxis()->SetTitleOffset(%i);'%xoffset
+print '\tgr->GetYaxis()->SetTitleOffset(%f);'%yoffset
+print '\tgr->GetXaxis()->SetTitleOffset(%f);'%xoffset
 print '\tgr->GetYaxis()->SetTitleSize(0.05);'
 print '\tgr->GetXaxis()->SetTitleSize(0.05);'
 print '\t//gr->GetXaxis()->SetLabelSize(0.05);'
-print '\tgr->GetYaxis()->SetRangeUser(%i,%i);'%(yrange[0],yrange[1])
+print '\tgr->GetYaxis()->SetRangeUser(%f,%f);'%(yrange[0],yrange[1])
 print '\tgr->SetMarkerSize(1);'
 print '\tgr->SetMarkerColor(2);'
 print '\tgr->SetMarkerStyle(21);'
 print '\t'
-print '\tgr->Draw("ALP");'
+print '\tgr->Draw("ACP");'
+#print '\tgr->Draw("ALP");'
 print '\t'
 for leg in range(0,len(legends)):
-	print '\tTLatex *text%i = new TLatex(%i,%i,"%s");'%(leg,pos1,pos2-((pos2/100.)*sep*leg),legends[leg])
+	print '\tTLatex *text%i = new TLatex(%f,%f,"%s");'%(leg,pos1,pos2-((pos2/100.)*sep*leg),legends[leg])
 
+print ''
+for leg in range(0,len(legends)):
+	print '\ttext%i->SetNDC();'%leg
 print ''
 for leg in range(0,len(legends)):
 	print '\ttext%i->SetTextFont(42);'%leg
@@ -109,9 +131,11 @@ for leg in range(0,len(legends)):
 print ''
 print ''
 print ''
-print '\tTLatex *cmsprem = new TLatex(%i,%i,"#it{CMS Preliminary}");'%(cpos1,cpos2)
+print '\tTLatex *cmsprem = new TLatex(%f,%f,"#it{CMS Preliminary}");'%(cpos1,cpos2)
+print '\tcmsprem->SetNDC();'
 print ''
-print '\tTLatex *gen = new TLatex(%i,%i,"%s");'%(cpos3,cpos2,DetInfo)
+print '\tTLatex *gen = new TLatex(%f,%f,"%s");'%(cpos3,cpos2,DetInfo)
+print '\tgen->SetNDC();'
 print ''
 print '\tcmsprem->Draw("same");'
 print '\tgen->Draw("same");'
