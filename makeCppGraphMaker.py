@@ -36,6 +36,9 @@ print '\t//Define the variables'
 print '\tFloat_t ',', '.join(VarInTextFile),' ;'
 pre = "v_"
 Pre_VarInTextFile = [pre + x for x in VarInTextFile ]
+#print Pre_VarInTextFile
+Pre_VarToPlot = [pre + x for x in VarToPlot ]
+#print "\n\n",Pre_VarToPlot,"\n\n"
 print '\tvector<Float_t> ',', '.join(Pre_VarInTextFile),' ;'
 print ''
 print ''
@@ -60,7 +63,7 @@ print "\t\tif(line[0] == '#') continue;"
 print '\t\t'
 print '\t\tstringstream(line) >>',' >> '.join(VarInTextFile),';'
 print '\t\t'
-print '\t\tcout<<"===> "<<',' <<"\\t" <<  '.join(VarInTextFile),'<<endl;'
+#print '\t\tcout<<"===> "<<',' <<"\\t" <<  '.join(VarInTextFile),'<<endl;'
 print ''
 for var in range(0,len(VarInTextFile)):
 	if (xscaleFactor != 0.0 and yscaleFactor != 0.0):
@@ -91,8 +94,12 @@ print '\tTGraphErrors * gr = new TGraphErrors(%s.size()); '%Pre_VarInTextFile[0]
 print '\t    '
 print '\tfor (unsigned int i = 0; i<%s.size();i++)'%Pre_VarInTextFile[0]
 print '\t{'
-print '\t        gr->SetPoint(i,%s[i],%s[i]);'%(Pre_VarInTextFile[0],Pre_VarInTextFile[1])
-print '\t        gr->SetPointError(i,0,%s[i]);'%Pre_VarInTextFile[2]
+#print '\t        gr->SetPoint(i,%s[i],%s[i]);'%(Pre_VarInTextFile[0],Pre_VarInTextFile[1])
+print '\t        gr->SetPoint(i,%s[i],%s[i]);'%(Pre_VarToPlot[0],Pre_VarToPlot[1])
+if (len(Pre_VarToPlot)==3):
+	print '\t        gr->SetPointError(i,0,%s[i]);'%Pre_VarToPlot[2]
+else:
+	print '\t        gr->SetPointError(i,0,0);'
 print '\t}'
 print '\t'
 print '\t'
