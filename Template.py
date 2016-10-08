@@ -1,5 +1,9 @@
 OutPutCodeName="Current_vs_ClusterSize_All3Eta"
-InputData=["/home/ramkrishna/PhD_New_Dir_16July2016/GEM/GEM_TB/TB_2014/TestBeamAnalysisAllStudy/MakeClusterSizeDistributionPlot/Cluster_Size_WithDiff_Area_R1592_R1646_GE11_IV_GIF.dat","/home/ramkrishna/PhD_New_Dir_16July2016/GEM/GEM_TB/TB_2014/TestBeamAnalysisAllStudy/MakeClusterSizeDistributionPlot/Cluster_Size_WithDiff_Area_R1869_R1903_GE11_IV_GIF.dat","/home/ramkrishna/PhD_New_Dir_16July2016/GEM/GEM_TB/TB_2014/TestBeamAnalysisAllStudy/MakeClusterSizeDistributionPlot/Cluster_Size_WithDiff_Area_R2065_R2123_GE11_IV_GIF.dat"]
+
+datapath="/home/ramkrishna/PhD_New_Dir_16July2016/GEM/GEM_TB/TB_2014/TestBeamAnalysisAllStudy/MakeClusterSizeDistributionPlot/"
+
+InputData=["Cluster_Size_WithDiff_Area_R1592_R1646_GE11_IV_GIF.dat","Cluster_Size_WithDiff_Area_R1869_R1903_GE11_IV_GIF.dat","Cluster_Size_WithDiff_Area_R2065_R2123_GE11_IV_GIF.dat"]
+
 xlabel="Current Supplied to HV Divider (#mu A)"
 ylabel="Cluster Size"
 
@@ -22,7 +26,6 @@ legends = [
 	]
 	
 iffit = 1
-
 fitfunction = "pol3"
 fitXrange = [750,830]
 

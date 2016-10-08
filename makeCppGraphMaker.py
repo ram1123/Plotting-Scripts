@@ -63,7 +63,7 @@ print ''
 print '\tstring line;'
 for f in range(0,len(InputData)):
 	#print InputData[f]
-	print '\tin.open("%s");'%InputData[f]
+	print '\tin.open("%s%s");'%(datapath,InputData[f])
 	print '\twhile(getline(in,line))'
 	print '\t{'
 	print "\t\tif(line[0] == '#') continue;"
