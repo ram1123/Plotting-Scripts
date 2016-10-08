@@ -15,4 +15,8 @@ This step will give you graph in pdf & png form. Also it will give you a root fi
 If you want to modify anything which is not available in **Template.py** then you have to modify it in **makeCppGraphMaker.py**.
 
 ## To Do List
+1. Add facility so that it can plot many variables from one text file with many column.
+
+## Things DONE
 1. Change this code so that it can plot multigraph
+2. Added facility to handle many text file and plot graph using multigraph.

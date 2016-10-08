@@ -1,4 +1,6 @@
 *.pdf
+*.dat
+*.txt
 *.png
 *.pyc
 *.root
