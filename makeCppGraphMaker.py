@@ -12,7 +12,7 @@ from Template import *
 
 sys.stdout = open(OutPutCodeName+".C",'w')
 
-ColorChoice = ["kRed","kBlue","kGreen+3","kPink+5"]
+ColorChoice = ["kBlue", "kSpring", "kTeal", "kGray", "kMagenta", "kAzure", "kRed", "kCyan", "kViolet", "kGreen", "kOrange", "kPink", "kBlack", "kYellow"]
 
 print "// ############################################################"
 print "// # Usage                                                    #"
@@ -53,10 +53,11 @@ print ''
 print ''
 print '\tTCanvas* c1 = new TCanvas("c1","",1);'
 print '\tc1->Range(0,0,1,1);'
-print '\tTPad *pad = new TPad("pad","",0,0,1,1);'
-print '\tpad->SetGrid();'
-print '\tpad->Draw();'
-print '\tpad->cd();'
+print '\t//TPad *pad = new TPad("pad","",0,0,1,1);'
+print '\t//pad->SetGrid();'
+print '\t//pad->Draw();'
+print '\t//pad->cd();'
+print '\tTLegend * leg1 = new TLegend(0.530000,0.900000,0.630000,0.800000);'
 print ''
 print ''
 
@@ -119,13 +120,29 @@ for f in range(0,len(InputData)):
 	print '\tgr%i->GetYaxis()->SetTitleSize(0.05);'%f
 	print '\tgr%i->GetXaxis()->SetTitleSize(0.05);'%f
 	print '\t//gr%i->GetXaxis()->SetLabelSize(0.05);'%f
-	print '\tgr%i->GetYaxis()->SetRangeUser(%f,%f);'%(f,yrange[0],yrange[1])
+	if yrange[0]!=yrange[1]:
+		print '\tgr%i->GetYaxis()->SetRangeUser(%f,%f);'%(f,yrange[0],yrange[1])
 	print '\tgr%i->SetMarkerSize(1);'%f
 	print '\tgr%i->SetMarkerColor(%s);'%(f,ColorChoice[f])
 	print '\tgr%i->SetLineColor(%s);'%(f,ColorChoice[f])
 	print '\tgr%i->SetMarkerStyle(21);'%f
 	print '\t'
+	print '\tgr%i->Draw("AP");'%f
 	print '\t//gr%i->Draw("ACP");'%f
+        print '\tleg1->AddEntry(gr%i, "%s","lep");'%(f,legends[f])
+        print '\tleg1->SetFillColor(0);'
+        print '\tleg1->SetFillStyle(0);'
+        print '\tleg1->SetBorderSize(0);'
+        print '\tleg1->SetTextFont(42);'
+        print '\tleg1->SetTextSize(0.05);'
+        print '\tleg1->Draw();'
+	print '\tc1->SetName("%s");'%legends[f]
+        print '\tc1->Write();'
+        print '\tc1->SaveAs("%s_%s.pdf");'%(OutPutCodeName,legends[f])
+        print '\tc1->SaveAs("%s_%s.png");'%(OutPutCodeName,legends[f])
+        print '\tc1->Clear();'
+        print '\tleg1->Clear();'
+
 	#print '\tgr->Draw("ALP");'
 	print '\n'
 	if iffit == 1:
@@ -139,39 +156,47 @@ print '\t'
 print '\tTMultiGraph *mg = new TMultiGraph("mg",";%s;%s");'%(xlabel,ylabel)
 for f in range(0,len(InputData)):
 	print '\tmg->Add(gr%i);'%f
-print '\tmg->SetMaximum(%f);'%yrange[1]
-print '\tmg->SetMinimum(%f);'%yrange[0]
+if yrange[0]!=yrange[1]:
+	print '\tmg->SetMaximum(%f);'%yrange[1]
+	print '\tmg->SetMinimum(%f);'%yrange[0]
 print '\t//mg->GetXaxis()->SetLimits(750,815);'
 print '\tmg->Draw("AP");'
 
-for text in range(0,len(tlatexx)):
-	print '\tTLatex *text%i = new TLatex(%f,%f,"%s");'%(text,pos1,pos2-((pos2/100.)*sep*text),tlatexx[text])
-	LegY2Pos = pos2-((pos2/100.)*sep*text)
+LegY2Pos = 0.0
 
-print ''
-for text in range(0,len(tlatexx)):
-	print '\ttext%i->SetNDC();'%text
-print ''
-for text in range(0,len(tlatexx)):
-	print '\ttext%i->SetTextFont(42);'%text
-print ''
-for text in range(0,len(tlatexx)):
-	print '\ttext%i->SetTextSize(0.05);'%text
-print ''
-for text in range(0,len(tlatexx)):
-	print '\ttext%i->Draw("same");'%text
-print ''
+if len(tlatexx) > 0:
+	for text in range(0,len(tlatexx)):
+		print '\tTLatex *text%i = new TLatex(%f,%f,"%s");'%(text,pos1,pos2-((pos2/100.)*sep*text),tlatexx[text])
+		LegY2Pos = pos2-((pos2/100.)*sep*text)
+	print ''
+	for text in range(0,len(tlatexx)):
+		print '\ttext%i->SetNDC();'%text
+	print ''
+	for text in range(0,len(tlatexx)):
+		print '\ttext%i->SetTextFont(42);'%text
+	print ''
+	for text in range(0,len(tlatexx)):
+		print '\ttext%i->SetTextSize(0.05);'%text
+	print ''
+	for text in range(0,len(tlatexx)):
+		print '\ttext%i->Draw("same");'%text
+	print ''
 
-print '\tTLegend * leg = new TLegend(%f,%f,%f,%f);'%(pos1,LegY2Pos-0.06*len(tlatexx),pos1+0.20,LegY2Pos-0.02)
-print '\t//leg-> SetNColumns(2);'
-print '\t//leg->SetHeader("The Legend Title","C"); // option "C" allows to center the header'
-for size in range(0,len(legends)):
-	print '\tleg->AddEntry(gr%i, "%s","lep");'%(size,legends[size])
-print '\tleg->SetFillColor(0);'
-print '\tleg->SetBorderSize(0);'
-print '\tleg->SetTextFont(42);'
-print '\tleg->SetTextSize(0.05);'
-print '\tleg->Draw();'
+if len(legends) > 0:
+    if len(tlatexx) > 0:
+	print '\tTLegend * leg = new TLegend(%f,%f,%f,%f);'%(pos1,LegY2Pos-0.06*len(tlatexx),pos1+0.20,LegY2Pos-0.02)
+    else:
+	print '\tTLegend * leg = new TLegend(%f,%f,%f,%f);'%(pos1,0.90,pos1+0.30,0.50)
+    print '\tleg-> SetNColumns(3);'
+    print '\t//leg->SetHeader("The Legend Title","C"); // option "C" allows to center the header'
+    for size in range(0,len(legends)):
+    	print '\tleg->AddEntry(gr%i, "%s","lep");'%(size,legends[size])
+    print '\tleg->SetFillColor(0);'
+    print '\tleg->SetFillStyle(0);'
+    print '\tleg->SetBorderSize(0);'
+    print '\tleg->SetTextFont(42);'
+    print '\tleg->SetTextSize(0.05);'
+    print '\tleg->Draw();'
 
 print ''
 print ''
@@ -192,6 +217,7 @@ print '\tc1->SaveAs("%s.png");'%OutPutCodeName
 print '\tf->Write();'
 
 print '}'
+
 
 ################
 #  Close file  #
