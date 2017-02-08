@@ -136,6 +136,15 @@ for f in range(0,len(InputData)):
         print '\tleg1->SetTextFont(42);'
         print '\tleg1->SetTextSize(0.05);'
         print '\tleg1->Draw();'
+	if iffit == 1:
+		try:
+		    fitXrange
+		except :
+		    print '\tgr%i->Fit("%s","","");'%(f,fitfunction)
+		else:
+		    print '\tgr%i->Fit("%s","","",%f,%f);'%(f,fitfunction,fitXrange[0],fitXrange[1])
+		print '\tgr%i->GetFunction("%s")->SetLineColor(%s);'%(f,fitfunction,ColorChoice[f])
+	print '\n'
 	print '\tc1->SetName("%s");'%legends[f]
         print '\tc1->Write();'
         print '\tc1->SaveAs("%s_%s.pdf");'%(OutPutCodeName,legends[f])
@@ -144,10 +153,6 @@ for f in range(0,len(InputData)):
         print '\tleg1->Clear();'
 
 	#print '\tgr->Draw("ALP");'
-	print '\n'
-	if iffit == 1:
-		print '\tgr%i->Fit("%s","","",%f,%f);'%(f,fitfunction,fitXrange[0],fitXrange[1])
-		print '\tgr%i->GetFunction("%s")->SetLineColor(%s);'%(f,fitfunction,ColorChoice[f])
 	print '\n'
 	for size in range(0,len(Pre_VarInTextFile)):
 		print '\t%s.clear();'%Pre_VarInTextFile[size]

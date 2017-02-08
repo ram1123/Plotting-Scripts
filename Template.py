@@ -1,15 +1,15 @@
-OutPutCodeName="aQGC_Plots_31Jan_FT1_12p5em12_WPlepWMhad"
+OutPutCodeName="aQGC_Plots_31Jan_FT1_12p5em12_WPlepWMhad_Sensitivity"
 
 datapath="/home/ramkrishna/PhD_New_Dir_16July2016/PhysicsAnalysis/aQGC_Analysis/AnalyzeLHEFiles/GraphPlot_1D/InputFiles/"
 
-InputData=[ "FM0_par_31Jan_FT1_12p5em12_WPlepWMhad.dat", "FM1_par_31Jan_FT1_12p5em12_WPlepWMhad.dat", 
-	    "FM6_par_31Jan_FT1_12p5em12_WPlepWMhad.dat", "FM7_par_31Jan_FT1_12p5em12_WPlepWMhad.dat", 
-	    "FS0_par_31Jan_FT1_12p5em12_WPlepWMhad.dat", "FS1_par_31Jan_FT1_12p5em12_WPlepWMhad.dat", 
-	    "FT0_par_31Jan_FT1_12p5em12_WPlepWMhad.dat", "FT1_par_31Jan_FT1_12p5em12_WPlepWMhad.dat", 
-	    "FT2_par_31Jan_FT1_12p5em12_WPlepWMhad.dat" ]
+InputData=[ "FM0_par_31Jan_FT1_12p5em12_WPlepWMhad_Sensitivity.dat", "FM1_par_31Jan_FT1_12p5em12_WPlepWMhad_Sensitivity.dat", 
+	    "FM6_par_31Jan_FT1_12p5em12_WPlepWMhad_Sensitivity.dat", "FM7_par_31Jan_FT1_12p5em12_WPlepWMhad_Sensitivity.dat", 
+	    "FS0_par_31Jan_FT1_12p5em12_WPlepWMhad_Sensitivity.dat", "FS1_par_31Jan_FT1_12p5em12_WPlepWMhad_Sensitivity.dat", 
+	    "FT0_par_31Jan_FT1_12p5em12_WPlepWMhad_Sensitivity.dat", "FT1_par_31Jan_FT1_12p5em12_WPlepWMhad_Sensitivity.dat", 
+	    "FT2_par_31Jan_FT1_12p5em12_WPlepWMhad_Sensitivity.dat" ]
 
 xlabel="aQGC Parameter (#times 10^{-12} GeV^{-4})"
-ylabel="Cross-Section (pb)"
+ylabel="Sensitivity"
 
 
 VarInTextFile=["aQGC_par","CrossSec","ErrCrossSec"]  # Each element of list corresponds to one column of intput text file
@@ -29,9 +29,9 @@ legends = [
 	"FT2"
 	]
 	
-iffit = 0
+iffit = 1
 fitfunction = "pol3"
-fitXrange = [-4.0,4.0]
+fitXrange = [-60.0,60.0]	# Comment this line if want to set auto range
 
 yrange=[0.0,0.0]	# Y range; For auto range set yrange[0] = yrange[1]
 
